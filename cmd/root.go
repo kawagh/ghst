@@ -1,4 +1,4 @@
-package main
+package cmd
 
 import (
 	"fmt"
@@ -7,9 +7,24 @@ import (
 	"os/exec"
 	"os/user"
 	"strings"
+
+	"github.com/spf13/cobra"
 )
 
-func main() {
+var rootCmd = &cobra.Command{
+	Use:   "ghst",
+	Short: "Print commits in ghq repositories since 1 day ago",
+	Long:  "Print commits in ghq repositories since 1 day ago",
+	Run: func(cmd *cobra.Command, args []string) {
+		doGhst()
+	},
+}
+
+func Execute() error {
+	return rootCmd.Execute()
+}
+
+func doGhst() {
 	user, err := user.Current()
 	if err != nil {
 		log.Fatal(err)
